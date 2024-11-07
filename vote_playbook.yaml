@@ -1,0 +1,34 @@
+--- 
+- name: deploy voting application and store data in Mango DB
+  hosts: localhost
+  remote_user: caasops
+  become: yes
+  
+  tasks:
+  - name: Deploy vote application using flask web framework
+    shell: "kubectl create -f flask-objects.yaml"
+    tags: vote-deployment
+ 
+  - name: create service for vote application
+    shell: "kubectl create -f flask-svc.yaml"
+    tags: vote-service
+ 
+  - name: create virtualservice and gw for vote application
+    shell: "kubectl create -f voteapp-vs-gw.yaml"
+    tags: vote-vs-gw
+ 
+  - name: deploy mongodp to story information
+    shell: "kubectl create -f mango-objects.yaml"
+    tags: mangodb-deployment
+ 
+  - name: take backup of hosts
+    copy:
+     src: /etc/hosts
+     dest: /etc/hosts-bkp
+    tags: host-backup
+  
+  - name: add host entry in hosts
+    blockinfile:
+     path: /etc/hosts
+     block: "100.96.44.204 www.mymangoapp.com"
+    tags: host-entry

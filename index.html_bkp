@@ -1,0 +1,55 @@
+$(document).ready(function() {
+    function fetchResults() {
+        $.get("/results", function(data) {
+            $("#results").html(`
+                <p>Virat: ${data.Virat}</p>
+                <p>Dhoni: ${data.Dhoni}</p>
+            `);
+        });
+    }
+
+    $("#vote-virat").click(function() {
+        $.ajax({
+            url: "/vote",
+            type: "POST",
+            contentType: "application/json",  // Specify content type
+            data: JSON.stringify({ option: "Virat" }),  // Send data as JSON
+            success: function(response) {
+                alert(response.message);
+                fetchResults();
+            },
+            error: function() {
+                alert("Error voting. Please try again.");
+            }
+        });
+    });
+
+    $("#vote-dhoni").click(function() {
+        $.ajax({
+            url: "/vote",
+            type: "POST",
+            contentType: "application/json",  // Specify content type
+            data: JSON.stringify({ option: "Dhoni" }),  // Send data as JSON
+            success: function(response) {
+                alert(response.message);
+                fetchResults();
+            },
+            error: function() {
+                alert("Error voting. Please try again.");
+            }
+        });
+    });
+
+    $("#reset-votes").click(function() {
+        $.post("/reset", function(response) {
+            alert(response.message);
+            fetchResults();
+        }).fail(function() {
+            alert("Error resetting votes. Please try again.");
+        });
+    });
+
+    // Fetch initial results
+    fetchResults();
+});
+

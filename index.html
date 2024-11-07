@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Application</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vote for Your Favorite Player!</h1>
+    <button id="vote-virat">Vote for Virat</button>
+    <button id="vote-dhoni">Vote for Dhoni</button>
+
+    <h2>Results:</h2>
+    <div id="results">
+        <p>Loading...</p>
+    </div>
+
+    <button id="reset-votes">Reset Votes</button>
+
+    <script>
+        $(document).ready(function() {
+            function fetchResults() {
+                $.get("/results", function(data) {
+                    $("#results").html(`
+                        <p>Virat: ${data.Virat}</p>
+                        <p>Dhoni: ${data.Dhoni}</p>
+                    `);
+                });
+            }
+
+            $("#vote-virat").click(function() {
+                $.ajax({
+                    url: "/vote",
+                    type: "POST",
+                    contentType: "application/json",  // Specify content type
+                    data: JSON.stringify({ option: "Virat" }),  // Send data as JSON
+                    success: function(response) {
+                        alert(response.message);
+                        fetchResults();
+                    },
+                    error: function() {
+                        alert("Error voting. Please try again.");
+                    }
+                });
+            });
+
+            $("#vote-dhoni").click(function() {
+                $.ajax({
+                    url: "/vote",
+                    type: "POST",
+                    contentType: "application/json",  // Specify content type
+                    data: JSON.stringify({ option: "Dhoni" }),  // Send data as JSON
+                    success: function(response) {
+                        alert(response.message);
+                        fetchResults();
+                    },
+                    error: function() {
+                        alert("Error voting. Please try again.");
+                    }
+                });
+            });
+
+            $("#reset-votes").click(function() {
+                $.post("/reset", function(response) {
+                    alert(response.message);
+                    fetchResults();
+                }).fail(function() {
+                    alert("Error resetting votes. Please try again.");
+                });
+            });
+
+            // Fetch initial results
+            fetchResults();
+        });
+    </script>
+</body>
+</html>
+

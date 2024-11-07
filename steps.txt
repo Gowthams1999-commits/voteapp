@@ -1,0 +1,29 @@
+Results:
+
+curl -XGET http://10.245.30.169:80/results
+
+reset
+
+curl -X POST http://10.245.30.169:80/reset
+
+DHONI
+
+curl -X POST http://<EXTERNAL-IP>/vote -H "Content-Type: application/json" -d '{"option": "Dhoni"}'
+
+
+VIRAT
+
+curl -X POST http://10.245.30.169:80/vote -H "Content-Type: application/json" -d '{"option": "Virat"}'
+
+
+
+===========
+
+Connect with Mando DB
+
+mongosh -u somu -p VGVzdEAyMDI0Cg== --authenticationDatabase admin
+
+use voting_db --> switch to voting_db database
+
+db.votes.find().pretty() --> quary vote collecting
+

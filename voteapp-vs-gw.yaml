@@ -1,0 +1,47 @@
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  creationTimestamp: 2024-08-19T17:52:00Z
+  generation: 2
+  name: vote-mango-vs
+  namespace: vote-app
+  resourceVersion: "292579826"
+  uid: 1b1ad530-93ac-4104-870b-638cc37e556c
+spec:
+  gateways:
+    - vote-mango-gw
+  hosts:
+    - www.mymangoapp.com
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: flask-service.vote-app.svc.cluster.local
+            port:
+              number: 80
+Nginx-gateway: null
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  creationTimestamp: 2024-08-19T17:52:00Z
+  generation: 1
+  name: vote-mango-gw
+  namespace: vote-app
+  resourceVersion: "292577702"
+  uid: bf9cb6d2-f200-47e6-8191-306526c51718
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - www.mymangoapp.com
+      port:
+        name: HTTP
+        number: 80
+        protocol: HTTP
+
