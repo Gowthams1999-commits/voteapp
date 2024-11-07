@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: flask-app
-        image: thrisha24/voteapp:4
+        image: thrisha24/voteapp:5
         ports:
         - containerPort: 80
         env:
