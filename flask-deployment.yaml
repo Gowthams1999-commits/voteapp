@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: flask-app
-        image: gowthamdocker1999/work:v1  # Replace with your Flask app Docker image
+        image: thrisha24/voteapp:4
         ports:
         - containerPort: 80
         env:
